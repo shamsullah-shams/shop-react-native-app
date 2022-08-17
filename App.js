@@ -7,6 +7,20 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ProductOverScreen from "./screens/shop/ProductsOverviewScreen";
 import ProductDetailScreen from './screens/shop/ProductDetailScreen';
+import AppLoading from 'expo-app-loading';
+import * as Font from "expo-font";
+import { useState } from 'react';
+
+
+
+
+// fetch font
+const fetchFonts = () => {
+  return Font.loadAsync({
+    "open-sans": require('./assets/fonts/OpenSans-Regular.ttf'),
+    "open-sans-bold": require('./assets/fonts/OpenSans-Bold.ttf'),
+  })
+}
 
 
 // combining reducers
@@ -37,6 +51,18 @@ const Options = title => {
 }
 
 export default function App() {
+
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  if (!fontLoaded) {
+    return <AppLoading
+      startAsync={fetchFonts}
+      onFinish={() => setFontLoaded(true)}
+      onError={err => console.log(err)}
+    />
+  }
+
+
   return (
     <Provider store={store}>
       <NavigationContainer>
