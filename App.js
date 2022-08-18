@@ -12,6 +12,8 @@ import * as Font from "expo-font";
 import { useState } from 'react';
 import cartReducer from './store/reducers/cart';
 import CartScreen from './screens/shop/CartScreen';
+import orderReducer from './store/reducers/order';
+import OrderScreen from "./screens/shop/OrderScreen"
 
 
 
@@ -29,6 +31,7 @@ const fetchFonts = () => {
 const rootReducer = combineReducers({
   products: productReducer,
   cart: cartReducer,
+  orders: orderReducer,
 })
 // creating store object
 const store = createStore(rootReducer);
@@ -89,6 +92,12 @@ export default function App() {
             options={Options("some")}
             component={CartScreen}
           />
+          <Stack.Screen
+            name='order'
+            options={Options("Orders")}
+            component={OrderScreen}
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

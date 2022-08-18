@@ -1,4 +1,5 @@
 import { ADD_TO_CART, REMOVE_FROM_CART } from "../actions/cart";
+import { ORDER_NOW } from "../actions/order";
 import Cart from "../../models/cart";
 
 
@@ -54,6 +55,9 @@ export default (state = initialState, action) => {
                 items: updatedCartItems,
                 totalAmount: state.totalAmount - selectedItem.productPrice,
             }
+
+        case ORDER_NOW:
+            return initialState;
     }
     return state;
 }
