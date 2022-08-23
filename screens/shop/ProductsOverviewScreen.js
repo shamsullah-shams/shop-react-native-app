@@ -10,6 +10,8 @@ import { FontAwesome5, Octicons } from '@expo/vector-icons';
 
 
 const ProductOverviewScreen = props => {
+
+
     const products = useSelector(state => state.products.availableProducts);
     const dispatch = useDispatch();
     props.navigation.setOptions({
@@ -23,7 +25,17 @@ const ProductOverviewScreen = props => {
                 props.navigation.navigate("order");
             }} />
         ),
-    })
+    });
+
+
+    const onSelect = (id, title) => {
+        props.navigation.navigate("Product Details", {
+            prodId: id,
+            name: title,
+        });
+    }
+
+
     return (
         <FlatList
             style={styles.flatlist}
@@ -35,16 +47,17 @@ const ProductOverviewScreen = props => {
                         title={itemData.item.title}
                         price={itemData.item.price}
                         image={itemData.item.imageUrl}
-                        onViewDetail={() => {
-                            props.navigation.navigate("Product Details", {
-                                prodId: itemData.item.id,
-                                name: itemData.item.title,
-                            });
+                        onSelect={() => {
+                            onSelect(itemData.item.id, itemData.item.title)
                         }}
-                        onAddToCart={() => {
+                    >
+                        <Button title="View Details" onPress={() => {
+                            onSelect(itemData.item.id, itemData.item.title)
+                        }} />
+                        <Button title="Add To Cart" onPress={() => {
                             dispatch(cartActions.addToCart(itemData.item))
-                        }}
-                    />
+                        }} />
+                    </ProductItem>
                 )
             }}
         />
