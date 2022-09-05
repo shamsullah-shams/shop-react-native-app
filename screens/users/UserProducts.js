@@ -1,8 +1,9 @@
 import React from "react";
-import { FlatList, Button, StyleSheet } from "react-native";
+import { FlatList, Button, StyleSheet, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import PruductItem from "../../components/shop/ProductItem";
-import { DeletePorduct } from "../../store/actions/product";
+import { deletePorduct } from "../../store/actions/product";
+import { FontAwesome5 } from '@expo/vector-icons';
 
 
 const UserProductScreen = props => {
@@ -19,6 +20,41 @@ const UserProductScreen = props => {
     }
 
 
+    const editHandler = (id, title) => {
+        props.navigation.navigate("edit", {
+            prodId: id,
+            name: title,
+        })
+    }
+
+
+
+    props.navigation.setOptions({
+        headerRight: () => (
+            <FontAwesome5 name="shopping-cart" size={24} color="white" onPress={() => {
+                props.navigation.navigate("edit", {
+                    prodId: undefined,
+                });
+            }} />
+        ),
+    });
+
+
+    const deleteHandler = (id) => {
+        Alert.alert("Are you sure", 'You want to perminantly delete this item',
+            [
+                { text: "NO", style: "default" },
+                {
+                    text: "OK", style: "destructive", onPress: () => {
+                        dispatch(deletePorduct(id))
+                    }
+                }
+            ])
+    }
+
+
+
+
     return (
         <FlatList
             style={styles.flatlist}
@@ -32,9 +68,11 @@ const UserProductScreen = props => {
                 }}
             >
                 <Button title="Delete" onPress={() => {
-                    dispatch(DeletePorduct(itemData.item.id))
+                    deleteHandler(itemData.item.id);
                 }} />
-                <Button title="Edit" onPress={() => { }} />
+                <Button title="Edit" onPress={() => {
+                    editHandler(itemData.item.id, itemData.item.title);
+                }} />
             </PruductItem>}
         />
     )

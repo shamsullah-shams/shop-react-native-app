@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import productReducer from "./store/reducers/products";
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,6 +18,8 @@ import OrderScreen from "./screens/shop/OrderScreen";
 import UserProductScreen from './screens/users/UserProducts';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import EditProductScreen from './screens/users/EditProductScreen';
+import reduxThunk from "redux-thunk";
 
 
 
@@ -39,7 +41,7 @@ const rootReducer = combineReducers({
   orders: orderReducer,
 })
 // creating store object
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(reduxThunk));
 
 
 // create stack
@@ -106,6 +108,11 @@ const StackNavigation = () => {
         name='user'
         options={Options("user")}
         component={TabNavigation}
+      />
+      <Stack.Screen
+        name='edit'
+        options={Options("Edit")}
+        component={EditProductScreen}
       />
     </Stack.Navigator>
   );
